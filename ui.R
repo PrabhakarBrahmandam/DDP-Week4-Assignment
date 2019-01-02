@@ -3,37 +3,38 @@
 # run the application by clicking 'Run App' above.
 #
 # Find out more about building applications with Shiny here:
-# 
+#
 #    http://shiny.rstudio.com/
 #
 
-
 library(shiny)
-shinyUI(pageWithSidebar(
-  headerPanel("Investment Property"),
-  sidebarPanel(
-    h4('Property'),
-    textInput('text', 'Address', value=''),
-    numericInput('price', 'Price ($)', 550000),
-    numericInput('weeklyRent', 'Weekly Rent ($)', 550),
-    h5('Costs'),
-    numericInput('weeklyRepayments', 'Weekly Repayments ($ per week)', 503),
-    numericInput('waterPerQuarter', 'Water ($ per quarter)', 180),
-    numericInput('managementFees', 'Management Fees ($ per week)', 38)
-  ),
-  mainPanel(
-    h4('Rental Yield (%)'),
-    textOutput("rentalYield"),
-    h4('Cashflow Per Week ($)'),
-    textOutput("cashflowPerWeek"),
-    h4('Cashflow Per Year ($)'),
-    textOutput("cashflowPerYear"),
-    br(),
-    h4('Instructions'),
-    helpText("This application is for designed to allow investors to calculate the potential rental yield of a property and estimate the cashflow of owning the property."),
-    code("Rental Yield"),
-    helpText("Enter the property's price and expected weekly rent to calculate the rental yield."),
-    code("Cashflow"),
-    helpText("Enter the property's costs to estimate the cashflow of owning the property.")
-  )
+
+# Define UI for application that draws a histogram
+
+library(leaflet)
+library(plotly)
+
+shinyUI(fluidPage(
+        titlePanel("Villages under Antyodatya Mission"),
+        sidebarLayout(
+                sidebarPanel(
+                        sliderInput("sliderElec", "Pick Minimum and Maximum Values of score on hours of available electricity",
+                                    min(df$durationelec), max(df$durationelec), value = c(1, 2), step = 1),
+                        sliderInput("sliderBank", "Pick Minimum and Maximum Values of score on distance of bank",
+                                    min(df$disbank), max(df$disbank), value = c(0, 1), step = 1),
+                        sliderInput("sliderPubTrans", "Pick Minimum and Maximum Values of score on distance of public transport",
+                                    min(df$distrans), max(df$distrans),value = c(0, 1), step = 1),
+
+                        textOutput("slider_var"),br(),
+                        textOutput("map_var"),br(),
+                        textOutput("plot_var")
+                ),
+                mainPanel(
+        leafletOutput("map", height="500px"),
+        h4(" Map of villages under Antyodatya Mission as per the selected criteria"),
+        plotlyOutput("plot"),
+        h4("Plot of villages under Antyodatya Mission as per the selected criteria")
+
+)
+)
 ))
